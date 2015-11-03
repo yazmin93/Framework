@@ -1,5 +1,9 @@
 <?php
-
+/**
+*clase tareas controller
+*Este archivo nos permite realizar acciones en el crud de tareas
+*@author Yazmin Fausto <yazfauscor@gmail.com>
+*/
 class tareasController extends AppController
 {
 	public function __construct(){
@@ -7,19 +11,21 @@ class tareasController extends AppController
 	}
 
 	public function index(){
-		//echo "Hola desde el metodo index";
-		//$tareas = $this->loadmodel("tarea");
-		
+				
 		$this->_view->titulo = "Pagina principal";
-		$this->_view->tareas = $this->db->find("tareas", "all", NULL);
+		$options=array("fields"=>"tareas.id, tareas.nombre, categorias.nombre AS categoria, fecha, prioridad, status", 
+						"join"=>"categorias",
+						"on"=> "categorias.id= categoria_id"
+			);
+		$this->_view->tareas = $this->db->find("tareas", "join", $options);
 		$this->_view->renderizar("index");
-		/*
-		$this->_view->titulo = "Página principal";
-		$this->_view->renderizar("index");
-		*/
+		
 	}
-
+	/**
+	*Metodo que nos permite agregar tareas 
+	*/
 	public function add(){
+		$this->_view->categorias=$this->db->find("categorias", "all", null);
 		if ($_POST) {
 			if ($this->db->save("tareas", $_POST)) {
 				$this->redirect(array ("controller" =>"tareas"));
@@ -31,8 +37,11 @@ class tareasController extends AppController
 		}
 		$this->_view->renderizar("add");
 	}
-
+	/**
+	*Metodo que nos permite editar las tareas
+	*/
 	public function edit($id = NULL){
+		$this->_view->categorias=$this->db->find("categorias", "all", null);
 		if ($_POST) {
 			if ($this->db->update("tareas", $_POST)) {
 					$this->redirect(array("controller" => "tareas", "action" => "index"));
@@ -45,7 +54,9 @@ class tareasController extends AppController
 			$this->_view->renderizar("edit");
 		}
 	}
-
+	/**
+	*Metodo que nos permite eliminar tareas
+	*/
 	public function delete($id = NULL){
 		$conditions = "id=".$id;
 		if ($this->db->delete("tareas", $conditions)) {

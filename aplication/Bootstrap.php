@@ -19,10 +19,11 @@ class Bootstrap
 			}
 
 			if ($metodo=="login") {
-
-			}else {
+				
+			}else{
 				Authorization::logged();
 			}
+
 			if (isset($args)) {
 				call_user_func_array(array($controller, $metodo), $args);
 			}else{

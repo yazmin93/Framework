@@ -1,4 +1,9 @@
 <?php
+/**
+*clase usurio controller
+*clase que nos permite realizar acciones en el crud
+*@author Yazmin Fausto <yazfauscor@gmail.com>
+*/
 
 class usuariosController extends AppController
 {
@@ -11,7 +16,9 @@ class usuariosController extends AppController
 		$this->_view->usuarios = $this->db->find("usuarios", "all", NULL);
 		$this->_view->renderizar("index");
 	}
-
+	/**
+	*Metodo que nos permite agregar un usuario 
+	*/
 	public function add(){
 		if ($_POST) {
 			$pass = new Password();
@@ -26,9 +33,17 @@ class usuariosController extends AppController
 		}
 		$this->_view->renderizar("add");
 	}
-
+	/**
+	*Metodo que nos permite editar un usuario 
+	*/
 	public function edit($id = NULL){
 		if ($_POST) {
+
+			if (!empty($_POST["pass"])) {
+				$pass = new Password();
+				$_POST["password"] = $pass->getPassword($_POST["pass"]);
+			}
+
 			if ($this->db->update("usuarios", $_POST)) {
 					$this->redirect(array("controller" => "usuarios", "action" => "index"));
 				}else{
@@ -40,38 +55,46 @@ class usuariosController extends AppController
 			$this->_view->renderizar("edit");
 		}
 	}
-
+	/**
+	*Metodo que nos permite eliminar un usuario 
+	*/
 	public function delete($id = NULL){
 		$conditions = "id=".$id;
 		if ($this->db->delete("usuarios", $conditions)) {
 			$this->redirect(array("controller" => "usuarios", "action" => "index"));
 		}
-
 	}
+
+	/**
+	*metodo de los usuarios cuando inicien en la aplicacion
+	*/
 	public function login(){
-		if ($_POST){
+		if ($_POST) {
 			$pass = new Password();
-			$filter = new Validations();
+			$filter = new Validations();//sanear lo que se reciba en el formaulario
 			$auth = new Authorization();
 
-			$username = $filter-> sanitizeText($_POST)["username"];
-			$password = $filter-> sanitizeText($_POST)["password"];
+			$username = $filter->sanitizeText($_POST["username"]);//sanea cajas 
+			$password = $filter->sanitizeText($_POST["password"]);
 
-			$options = array ("conditions"=> "username = $username");
-			$usuario = $this ->db->find("usuarios", "firts", $options);
+			$options = array("conditions" => "username = '$username'");
+			$usuario = $this->db->find("usuarios", "first", $options);
 
-			if ($pass->isValid($password, $usuario["password"])){
+			if ($pass->isValid($password, $usuario["password"])) {
 				$auth->login($usuario);
-				$this->redirect(array("controller" =>"tareas"));
+				$this->redirect(array("controller" => "tareas"));
 			}else{
 				echo "Usuario invalido";
 			}
-
-			
+		}
+		$this->_view->renderizar("login");
 	}
-	$this->_view->renderizar("login");
-}
+
+	/**
+	*Metodo para salir de las sesiones activas
+	*/
 	public function logout(){
-	$auth = new Authorization();
-	$auth->logout();
+		$auth = new Authorization();
+		$auth->logout();
+	}
 }

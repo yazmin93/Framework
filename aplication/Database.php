@@ -6,6 +6,7 @@
 class ClassPDO
 {
 	 /**
+	 *
 	 * Archivo de clase de conexión PDO
 	 *
 	 * Clase que permite acciones CRUD usando PDO
@@ -91,6 +92,10 @@ class ClassPDO
 
 		if (!empty($options["fields"])) {
 			$fields = $options["fields"];
+		}
+
+		if (!empty($options["join"])) {
+			$parameters .= " JOIN ".$options["join"]." ON ".$options["on"];
 		}
 
 		if (!empty($options["conditions"])) {

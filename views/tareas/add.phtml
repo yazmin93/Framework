@@ -5,4 +5,12 @@
 		<p>Fecha: <input type="text" name="fecha"></p>
 		<p>Prioridad: <input type="text" name="prioridad"></p>
 		<p>Estatus: <input type="text" name="status"></p>
+		<p>Categorias: 
+		<select name="categoria_id"> 
+		<option value="">selecciona</option>
+		<?php foreach ($this->categorias as $categoria): ?>
+			<option value="<?php echo $categoria["id"]; ?>"><?php echo $categoria["nombre"]; ?></option>
+		<?php endforeach; ?>
+		</select>
+		 </p>
 		<p><input type="submit"></p>

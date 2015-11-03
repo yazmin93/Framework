@@ -18,6 +18,7 @@
 				<li><a href="<?php echo APP_URL; ?>">Inicio</a></li>
 				<li><a href="<?php echo APP_URL."tareas"; ?>">Tareas</a></li>
 				<li><a href="<?php echo APP_URL."usuarios"; ?>">Usuarios</a></li>
+				<li><a href="<?php echo APP_URL."categorias"; ?>">categorias</a></li>
 			</ul>
 		</nav>
 	</header>

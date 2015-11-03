@@ -7,6 +7,7 @@
 		<th>Fecha</th>
 		<th>Prioridad</th>
 		<th>Estatus</th>
+		<th>Categorias</th>
 		<th>Accion</th>
 	</tr>
 	<?php foreach ($this->tareas as $tarea): ?>
@@ -16,6 +17,7 @@
 		<td><?php echo $tarea["fecha"]; ?></td>
 		<td><?php echo $tarea["prioridad"]; ?></td>
 		<td><?php echo $tarea["status"]; ?></td>
+		<td><?php echo $tarea["categoria"]; ?></td>
 		<td><?php ?>
 			<a href="<?php echo APP_URL."tareas/edit/".$tarea["id"]; ?>">Editar</a>
 			<a href="<?php echo APP_URL."tareas/delete/".$tarea["id"]; ?>">Eliminar</a>

@@ -3,9 +3,10 @@
 class View
 {
 	private $_controlador;
+	private $_metodo;
 	public function __construct(Request $peticion){
 		$this->_controlador = $peticion->getControlador();
-		$this ->_metodo = $peticion->getMetodo
+		$this->_metodo = $peticion->getMetodo();//necitamos ver si necesitamos cambiar el layout
 	}
 
 	public function renderizar($vista){
@@ -18,13 +19,13 @@ class View
 
 		$rutaView = ROOT . "views" . DS . 
 		$this->_controlador .DS. $vista . ".phtml";
-
-		if ($this->_metodo=="login"){
-			$layout="login";
+		
+		if ($this->_metodo=="login") {
+			$layout = "login";
 		}else{
 			$layout = DEFAULT_LAYOUT;
 		}
-		
+
 		if (is_readable($rutaView)){
 			require_once ROOT . "views" . DS . "layouts" . DS . DEFAULT_LAYOUT . DS . "header.php";
 			require_once $rutaView;
